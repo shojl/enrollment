@@ -1,0 +1,35 @@
+---
+title: "enrollment"
+author: "Shojeh Liu"
+date: "2/18/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readxl)
+library(tidyverse)
+library(janitor)
+library(reprex)
+```
+
+```{r}
+x <- read_excel(path = "class_enrollment_summary_by_term2.18.20.xlsx",
+                skip = 3) %>%
+  clean_names() %>%
+  filter(!is.na(course_name))
+```
+
+```{r}
+y <- x %>%
+  group_by(course_department) %>%
+  summarize(total = sum(total)) %>%
+  arrange(desc(total))
+```
+
+```{r}
+economics <- x %>%
+  filter(course_department == "economics")
+
+```
+What are the five departments that have the biggest enrollments this semester
